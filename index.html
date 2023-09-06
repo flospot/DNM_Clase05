@@ -15,7 +15,7 @@
             body {
                 color: rgba(225, 225, 225, 0.6);
                 background: #222;
-                font-family: Helvetica, Arial, sans-serif;
+                font-family: 'Space Grotesk', sans-serif;
                 font-size: 1rem;
             }
 
@@ -67,13 +67,17 @@
             }
 
             section article.cl {
-                color: rgba(44, 70, 255, 0.9);
+                color: rgba(40, 103, 178, 0.9);
             }
             
             section article.fj {
-                color: rgba(27, 252, 248, 0.9);
+                color: rgba(27, 252, 242, 0.9);
             }
 
+            section article.ind {
+                color: rgba(16, 144, 144, 0.9);
+            }
+            
             section article h3 {
                 font-size: calc(3rem + 2vw);
                 line-height: 1;
@@ -118,8 +122,8 @@
     <body>
         <div class="container">
             <header>
-                <h1>M2.5+ Earthquakes &#1FAE8 </h1>
-                <h2>Past 30 days. Updated every minute</h2>
+                <h1>Terremotos M2.5+ &#128165 </h1>
+                <h2>De los últimos 30 días, actualizado a cada minuto.</h2>
             </header>
             <main>
                 <section></section>
@@ -150,20 +154,28 @@
                     data.features.forEach(function (t, i) {
                         var articuloTipo;
                         //par de alternativas para la variable articuloTipo
-                        if (t.properties.place.includes("Chile")) { articuloTipo = '<article class="cl">'; } else if (t.properties.place.includes("Fiji")){ articuloTipo = '<article class="fj">'; } else { articuloTipo = '<article class="etc">';}
+                        if (t.properties.place.includes("Chile")) { articuloTipo = '<article class="cl">'; } 
+                        else if (t.properties.place.includes("Fiji")) { articuloTipo = '<article class="fj">'; }
+                        else if (t.properties.place.includes("Indonesia")) { articuloTipo = '<article class="ind">'; }
+                        else { articuloTipo = '<article class="etc">';}
                         //aplicación del articuloTipo y la pequeña función
                         $("section").append(`${articuloTipo}<h3>${t.properties.mag.toFixed(1)}</h3><p>${t.properties.place}</p><p><a href="${t.properties.url}" target="_blank" rel="noopener noreferrer">${registro(t.properties.time)}</a></p></article>`);
                     });
-                    //algo más para interactuar con el menú
+                    //nota mental futura flo: si el valor es x, lo que queri mostrar va solo en el show y obvio el resto que no queri ver en el hide, no van correlacionadas pero si deben ir en orden
                     var valor;
                     $("#opciones").change(function () {
                         valor = $("select").val();
                         if (valor == "Chile") {
-                            $(".etc, .fj").hide();
+                            $(".cl").show();
+                            $(".etc, .fj, .ind").hide();
                         } else if (valor == "Fiji") {
-                            $(".etc, .cl").hide();
+                            $(".fj").show();
+                            $(".etc, .cl, .ind").hide();
+                        } else if (valor == "Indonesia") {
+                            $(".ind").show();
+                            $(".etc, .cl, .fj").hide();
                         } else {
-                            $(".etc, .fj").show();
+                            $(".etc, .cl, .fj, .ind").show();
                         }
                     });
                 }); // cierro $.getJSON((){});
